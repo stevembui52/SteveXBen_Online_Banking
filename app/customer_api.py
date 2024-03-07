@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from .db_model import *
+from db_model import *
 from werkzeug.security import generate_password_hash, check_password_hash
 
 local_session = Session(bind=engine)
@@ -10,28 +10,32 @@ customer = Blueprint("customer", __name__, url_prefix="/api/v1/customer")
 @customer.route("/", methods = ["POST", "GET"])
 def create_customer():
     if request.method == "POST":
-        data = request.json()
-        first_name = data.get("first_name")
-        last_name = data.get("last_name")
-        username = data.get("username")
-        id_number = data.get("id_number")
-        email = data.get("email")
-        phone_no = data.get("phone_number")
-        password = data.get("password")
-        address = data.get("address")
+        data = request.get_json()
+        first_name = data["first_name"]
+        last_name = data["last_name"]
+        username = data["username"]
+        id_number = data["id_number"]
+        email = data["email"]
+        phone_no = data["phone_no"]
+        password = data["password"]
+        address = data["address"]
 
         user = local_session.query(Customer).filter_by(username=username, id_number=id_number).first()
 
-        if len(first_name) or len(last_name) or len(username) < 3:
-            return jsonify({"Warning": "Too short!"})
+        if len(first_name) < 3:
+            return jsonify({"Warning": "first name short!"})
+        if len(last_name) < 3:
+            return jsonify({"Warning": "last name short!"})
+        if len(username) < 3:
+            return jsonify({"Warning": "username name short!"})
         if not username.isalnum() or " " in username:
             return jsonify({"Warning": "Invalid username"})
-        if len(id_number) < 6 and len(id_number) > 8:
-            return jsonify({"warning":"invalid id number"})
-        if user.username == username:
-            return jsonify({"warning":"Username already exists"})
-        if user.id_number == id_number:
-            return jsonify({"warning":"Identification already in use"})
+        # if len(id_number) < 6 and len(id_number) > 8:
+        #     return jsonify({"warning":"invalid id number"})
+        # if user.username == username:
+        #     return jsonify({"warning":"Username already exists"})
+        # if user.id_number == id_number:
+        #     return jsonify({"warning":"Identification already in use"})
         hashed_pwd = generate_password_hash(password)
 
         cust = Customer(first_name=first_name, last_name=last_name, username=username,

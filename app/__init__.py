@@ -1,5 +1,5 @@
 from flask import Flask
-from .customer_api import customer
+from customer_api import customer
 
 def create_app(app_config=None):
 
@@ -12,3 +12,10 @@ def create_app(app_config=None):
     app.register_blueprint(customer)
 
     return app
+
+
+
+
+if __name__ == "__main__":
+    app = create_app(None)
+    app.run(debug=True)

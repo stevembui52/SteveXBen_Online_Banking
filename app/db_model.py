@@ -27,7 +27,7 @@ class Customer(Base):
     id_number = Column(String(12), nullable=False, unique=True)
     email = Column(String(150), nullable=False)
     phone_no = Column(Integer(), nullable=False)
-    password = Column(String(60), nullable=False)
+    password = Column(String(255), nullable=False)
     address = Column(String(50), nullable=False)
     branch_id = Column(Integer(), ForeignKey("branches.id"), nullable=False)
     created_at = Column(DateTime(), default=datetime.now())
