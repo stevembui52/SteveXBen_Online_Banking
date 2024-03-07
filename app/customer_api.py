@@ -16,6 +16,7 @@ def create_customer():
         username = data["username"]
         id_number = data["id_number"]
         email = data["email"]
+        branch_id = data["branch_id"]
         phone_no = data["phone_no"]
         password = data["password"]
         address = data["address"]
@@ -23,13 +24,13 @@ def create_customer():
         user = local_session.query(Customer).filter_by(username=username, id_number=id_number).first()
 
         if len(first_name) < 3:
-            return jsonify({"Warning": "first name short!"})
+            return jsonify({"Warning": "first name short!"}), 401
         if len(last_name) < 3:
-            return jsonify({"Warning": "last name short!"})
+            return jsonify({"Warning": "last name short!"}), 401
         if len(username) < 3:
-            return jsonify({"Warning": "username name short!"})
+            return jsonify({"Warning": "username name short!"}), 401
         if not username.isalnum() or " " in username:
-            return jsonify({"Warning": "Invalid username"})
+            return jsonify({"Warning": "Invalid username"}), 401
         # if len(id_number) < 6 and len(id_number) > 8:
         #     return jsonify({"warning":"invalid id number"})
         # if user.username == username:
@@ -39,7 +40,7 @@ def create_customer():
         hashed_pwd = generate_password_hash(password)
 
         cust = Customer(first_name=first_name, last_name=last_name, username=username,
-                        id_number=id_number, email=email, phone_no=phone_no, password=hashed_pwd,
+                        id_number=id_number, email=email, phone_no=phone_no, branch_id=branch_id, password=hashed_pwd,
                         address=address)
         
         local_session.add(cust)
@@ -49,7 +50,7 @@ def create_customer():
                         "Customer":{"username":username,
                                     "email":email,
                                     "phone_number":phone_no,
-                                    "address":address}})
+                                    "address":address}}), 201
     
 
 
