@@ -21,7 +21,7 @@ def create_customer():
         password = data["password"]
         address = data["address"]
 
-        user = local_session.query(Customer).filter_by(username=username, id_number=id_number).first()
+        user = local_session.query(Customer).filter(Customer.username==username).first()
 
         if len(first_name) < 3:
             return jsonify({"Warning": "first name short!"}), 401
@@ -33,15 +33,15 @@ def create_customer():
             return jsonify({"Warning": "Invalid username"}), 401
         # if len(id_number) < 6 and len(id_number) > 8:
         #     return jsonify({"warning":"invalid id number"})
-        # if user.username == username:
-        #     return jsonify({"warning":"Username already exists"})
+        if user.username == username:
+            return jsonify({"warning":"Username already exists"})
         # if user.id_number == id_number:
         #     return jsonify({"warning":"Identification already in use"})
         hashed_pwd = generate_password_hash(password)
 
         cust = Customer(first_name=first_name, last_name=last_name, username=username,
-                        id_number=id_number, email=email, phone_no=phone_no, branch_id=branch_id, password=hashed_pwd,
-                        address=address)
+                        id_number=id_number, email=email, phone_no=phone_no, branch_id=branch_id,
+                        password=hashed_pwd, address=address)
         
         local_session.add(cust)
         local_session.commit()
@@ -54,7 +54,20 @@ def create_customer():
     
 
 
-@customer.route("/login")
+@customer.route("/login", methods = ["POST"])
 def cust_login():
-    pass
+    if request.method=="POST":
+        user_name = request.json.get("user_name")
+        password = request.json.get("password")
+
+        user = local_session.query(Customer).filter(Customer.username==user_name).first()
+
+        if user:
+            if check_password_hash(user.password, password):
+                return jsonify({"Message": "User logged in successifully"}), 200
+            else:
+                return jsonify({"Error":"invalid credentials"}), 401
+        else:
+            return jsonify({"Error":"User not found"}), 404
+        
 
