@@ -8,7 +8,7 @@ local_session = Session(bind=engine)
 customer = Blueprint("customer", __name__, url_prefix="/api/v1/customer")
 
 
-@customer.route("/", methods = ["POST", "GET"])
+@customer.route("/register", methods = ["POST", "GET"])
 def create_customer():
     if request.method == "POST":
         data = request.get_json()
@@ -17,7 +17,8 @@ def create_customer():
         username = data["username"]
         id_number = data["id_number"]
         email = data["email"]
-        branch_id = data["branch_id"]
+        # branch_id = data["branch_id"]
+        # account_id = data["account_id"]
         phone_no = data["phone_no"]
         password = data["password"]
         address = data["address"]
@@ -35,13 +36,13 @@ def create_customer():
         # if len(id_number) < 6 and len(id_number) > 8:
         #     return jsonify({"warning":"invalid id number"})
         if user.username == username:
-            return jsonify({"warning":"Username already exists"})
+            return jsonify({"warning":"Username already exists"}), 409
         # if user.id_number == id_number:
         #     return jsonify({"warning":"Identification already in use"})
         hashed_pwd = generate_password_hash(password)
 
         cust = Customer(first_name=first_name, last_name=last_name, username=username,
-                        id_number=id_number, email=email, phone_no=phone_no, branch_id=branch_id,
+                        id_number=id_number, email=email, phone_no=phone_no,
                         password=hashed_pwd, address=address)
         
         local_session.add(cust)
@@ -74,5 +75,3 @@ def cust_login():
                 return jsonify({"Error":"invalid credentials"}), 401
         else:
             return jsonify({"Error":"User not found"}), 404
-        
-
