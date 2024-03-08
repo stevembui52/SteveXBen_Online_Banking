@@ -17,7 +17,8 @@ def create_customer():
         username = data["username"]
         id_number = data["id_number"]
         email = data["email"]
-        branch_id = data["branch_id"]
+        # branch_id = data["branch_id"]
+        # account_id = data["account_id"]
         phone_no = data["phone_no"]
         password = data["password"]
         address = data["address"]
@@ -41,7 +42,7 @@ def create_customer():
         hashed_pwd = generate_password_hash(password)
 
         cust = Customer(first_name=first_name, last_name=last_name, username=username,
-                        id_number=id_number, email=email, phone_no=phone_no, branch_id=branch_id,
+                        id_number=id_number, email=email, phone_no=phone_no,
                         password=hashed_pwd, address=address)
         
         local_session.add(cust)

@@ -29,10 +29,10 @@ class Customer(Base):
     phone_no = Column(Integer(), nullable=False)
     password = Column(String(255), nullable=False)
     address = Column(String(50), nullable=False)
-    branch_id = Column(Integer(), ForeignKey("branches.id"), nullable=False)
+    branch_id = Column(Integer(), ForeignKey("branches.id"), nullable=True)
     created_at = Column(DateTime(), default=datetime.now())
     updated_at = Column(DateTime(), onupdate=datetime.now())
-    account = relationship("Account", backref="customers")
+    account_id = Column(Integer(), ForeignKey('account.id'), nullable=True)
     transaction = relationship("Transaction", backref="customers")
 
 
@@ -42,10 +42,11 @@ class Customer(Base):
 class Account(Base):
     __tablename__ = "account"
     id = Column(Integer(), primary_key=True)
-    account_number = Column(String(10), unique=True, nullable=False)
+    account_number = Column(String(10), unique=True, nullable=True)
     account_type = Column(String(50), unique=True)
     balance = Column(Float(), default=0)
-    customer_id = Column(Integer(), ForeignKey('customers.id'), nullable=False)
+    # customer_id = Column(Integer(), ForeignKey('customers.id'), nullable=False)
+    customer = relationship("Customer", backref="account")
     transaction = relationship("Transaction", backref="account")
 
 
@@ -58,8 +59,8 @@ class Transaction(Base):
     amount = Column(Float(), nullable=False)
     description = Column(String(200))
     timestamp = Column(DateTime(), default=datetime.now())
-    account_id = Column(Integer(), ForeignKey('account.id'), nullable=False)
-    customer_id = Column(Integer(), ForeignKey('customers.id'), nullable=False)
+    account_id = Column(Integer(), ForeignKey('account.id'), nullable=True)
+    customer_id = Column(Integer(), ForeignKey('customers.id'), nullable=True)
 
 
     def __repr__(self):
