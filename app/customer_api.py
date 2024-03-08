@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from db_model import *
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_refresh_token, create_access_token
 
 local_session = Session(bind=engine)
 
@@ -64,7 +65,11 @@ def cust_login():
 
         if user:
             if check_password_hash(user.password, password):
-                return jsonify({"Message": "User logged in successifully"}), 200
+                access = create_access_token(identity=user.id)
+                refresh = create_refresh_token(identity=user.id)
+                return jsonify({"Message": "User logged in successifully",
+                                "Access":access,
+                                "refresh":refresh}), 200
             else:
                 return jsonify({"Error":"invalid credentials"}), 401
         else:
