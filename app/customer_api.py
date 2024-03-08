@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from db_model import *
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_refresh_token, create_access_token
+from flask_jwt_extended import create_refresh_token, create_access_token, jwt_required, get_jwt_identity
 
 local_session = Session(bind=engine)
 
@@ -75,3 +75,17 @@ def cust_login():
                 return jsonify({"Error":"invalid credentials"}), 401
         else:
             return jsonify({"Error":"User not found"}), 404
+
+@customer.route("/customers")
+@jwt_required()
+def get_customer():
+    cust_id = get_jwt_identity()
+
+    cust = local_session.query(Customer).filter(Customer.id==cust_id).first()
+
+    return jsonify({"Customer":{"customer name": cust.username,
+                                "customer email": cust.email,
+                                "customer address": cust.address}}), 200
+
+
+
