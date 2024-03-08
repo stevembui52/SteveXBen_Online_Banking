@@ -1,6 +1,7 @@
 from flask import Flask
 from customer_api import customer
 from branch_api import branch
+from account_api import account
 from flask_jwt_extended import JWTManager
 
 def create_app():
@@ -16,6 +17,7 @@ def create_app():
     
     app.register_blueprint(customer)
     app.register_blueprint(branch)
+    app.register_blueprint(account)
 
     return app
 

@@ -10,16 +10,19 @@ account = Blueprint("account", __name__, url_prefix="/api/v1/account")
 def create_branch():
     if request.method == "POST":
         data = request.get_json()
-        branch_name = data["branch_name"]
-        branch_location = data["branch_location"]
+        account_number = data["account_number"]
+        account_type = data["account_type"]
+        balance = data["balance"]
 
-        in_branch = local_session.query(Branch).filter_by(branch_name=branch_name).first()
+        # acc = local_session.query(Account).filter(Account.name).first()
 
-        bran = Branch(branch_name=branch_name, branch_location=branch_location)
+        acc = Account(account_number=account_number, account_type=account_type,
+                      balance=balance)
         
-        local_session.add(bran)
+        local_session.add(acc)
         local_session.commit()
 
-        return jsonify({"Message":"Branch Created Successifully",
-                        "Branch":{"Branch name":branch_name,
-                                    "branch location":branch_location}})
+        return jsonify({"Message":"Account Created Successifully",
+                        "Account":{"Account number":account_number,
+                                    "Account type":account_type,
+                                    "balance":balance}}), 201
