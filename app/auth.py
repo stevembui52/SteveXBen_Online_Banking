@@ -1,15 +1,15 @@
 from flask import Blueprint, request
 from db_model import *
-from forms import RegistrationForm
+from forms import RegisterForm
 from werkzeug.security import generate_password_hash, check_password_hash
 # from flask_jwt_extended import create_refresh_token, create_access_token, jwt_required, get_jwt_identity
 
 local_session = Session(bind=engine)
 
-customer = Blueprint("customer", __name__, url_prefix="/api/v1/customer")
+customers = Blueprint("customers", __name__, url_prefix="/api/v1/customers")
 
 
-@customer.route("/register", methods = ["POST", "GET"])
+@customers.route("/register", methods = ["POST", "GET"])
 def create_customer():
     if request.method == "POST":
         data = request.get_json()
@@ -53,7 +53,7 @@ def create_customer():
     
 
 
-@customer.route("/login", methods = ["POST"])
+@customers.route("/login", methods = ["POST"])
 def cust_login():
     if request.method=="POST":
         user_name = request.json.get("user_name")
