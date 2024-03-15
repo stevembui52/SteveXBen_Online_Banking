@@ -27,6 +27,7 @@ def create_app():
     app.register_blueprint(branch)
     app.register_blueprint(account)
     app.register_blueprint(customers)
+    app.register_blueprint(dashboard)
     return app
 
 

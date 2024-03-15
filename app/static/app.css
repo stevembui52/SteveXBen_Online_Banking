@@ -17,3 +17,33 @@
 .center{
     margin-left: 40%;
 }
+.dash-h1{
+    display: flex;
+    justify-content: space-between;
+}
+.accounts{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 20px;
+}
+.accounts1{
+    background: #0f6f0f;
+    padding: 20px;
+    border-radius: 5px;
+}
+.accounts2{
+    background: #0d0ef0;
+    padding: 20px;
+    border-radius: 5px;
+}
+.accounts3{
+    background: #fb03ac;
+    padding: 20px;
+    border-radius: 5px;
+}
+.accounts4{
+    background: #0ee6c9;
+    padding: 20px;
+    border-radius: 5px;
+}

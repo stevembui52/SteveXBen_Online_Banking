@@ -1,32 +1,30 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h1>Dashboard  <small>Welcome  {{session.username}}</small></h1>
-    <a href="/add_article" class="btn btn-success">Add article</a>
-    <hr>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Createdate</th>
-                <th>Opt</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for article in articles %}
-            <tr>
-                <td>{{article.id}}</td>
-                <td>{{article.title}}</td>
-                <td>{{article.author}}</td>
-                <td>{{article.create_date}}</td>
-                <td><a href="" class="btn btn-primary">Edit</a></td>
-                <td><a href="" class="btn btn-danger">Delete</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
+    <div class="dash-h1">
+        <h1>Dashboard </h1>
+        <h3 class="text-secondary">Welcome  {{session.username}}</h3>
+    </div>
+    <div class="container accounts">
+        <div class="accounts1">
+            <h3> Savings account</h3>
+            <p>Kes. 5000</p>
+            <p>Hello</p>
+        </div>
+        <div class="accounts2">
+            <h3>Share Capital</h3>
+            <p>Kes. 5000</p>
+            <p>Hello</p>
+        </div>
+        <div class="accounts3">
+            <h3>Current account</h3>
+            <p>Kes. 5000</p>
+            <p>Hello</p>
+        </div>
+        <div class="accounts4">
+            <h3>Fixed account</h3>
+            <p>Kes. 5000</p>
+            <p>Hello</p>
+        </div>
+    </div>
 {% endblock %}
