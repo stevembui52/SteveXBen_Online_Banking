@@ -14,6 +14,10 @@ def create_app():
     def index():
         return render_template("index.html")
     
+    @app.route("/about")
+    def about():
+        return render_template("about.html")
+    
     JWTManager(app)
     
     app.register_blueprint(customer)
@@ -28,4 +32,5 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
+    app.secret_key="kkkkkk"
     app.run(debug=True)

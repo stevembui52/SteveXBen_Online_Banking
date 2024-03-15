@@ -12,10 +12,6 @@
           <li class="nav-item">
             <a class="nav-link text-light" href="/about">About</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link text-light" href="/articles">Articles</a>
-          </li>
-          
         </ul>
         <ul class="navbar-nav mb-2 mb-lg-0  navbar-right">
           {% if  session.logged_in %}
@@ -24,6 +20,9 @@
             </li>
             <li class="nav-item">
               <a class="nav-link text-light" href="/logout">logout</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="/accounts">Accounts</a>
             </li>
           {% else %}
             <li class="nav-item">

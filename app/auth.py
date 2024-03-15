@@ -1,45 +1,35 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, render_template, flash, redirect, url_for
 from db_model import *
-from forms import RegisterForm
+from form import RegisterForm, LoginForm
 from werkzeug.security import generate_password_hash, check_password_hash
 # from flask_jwt_extended import create_refresh_token, create_access_token, jwt_required, get_jwt_identity
 
 local_session = Session(bind=engine)
 
-customers = Blueprint("customers", __name__, url_prefix="/api/v1/customers")
+customers = Blueprint("customers", __name__)
 
 
 @customers.route("/register", methods = ["POST", "GET"])
 def create_customer():
-    if request.method == "POST":
-        data = request.get_json()
-        first_name = data["first_name"]
-        last_name = data["last_name"]
-        username = data["username"]
-        id_number = data["id_number"]
-        email = data["email"]
+    form = RegisterForm(request.form)
+    if request.method == "POST" and  form.validate():
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+        username = form.username.data
+        id_number = form.id_number.data
+        email = form.email.data
         # branch_id = data["branch_id"]
         # account_id = data["account_id"]
-        phone_no = data["phone_no"]
-        password = data["password"]
-        address = data["address"]
+        phone_no = form.phone_no.data
+        password = form.password.data
+        address = form.address.data
 
         user = local_session.query(Customer).filter(Customer.username==username).first()
 
-        if len(first_name) < 3:
-            return 
-        if len(last_name) < 3:
-            return 
-        if len(username) < 3:
-            return 
-        if not username.isalnum() or " " in username:
-            return 
-        # if len(id_number) < 6 and len(id_number) > 8:
-        #     return jsonify({"warning":"invalid id number"})
-        if user.username == username:
-            return 
-        # if user.id_number == id_number:
-        #     return jsonify({"warning":"Identification already in use"})
+        if user:
+            flash('Already registered please login ', 'danger')
+            return render_template("register.html", form=form)
+
         hashed_pwd = generate_password_hash(password)
 
         cust = Customer(first_name=first_name, last_name=last_name, username=username,
@@ -48,20 +38,29 @@ def create_customer():
         
         local_session.add(cust)
         local_session.commit()
-
-        return 
+        flash('You are now registered you can login', 'success')
+        return redirect(url_for("index"))
+    return render_template("register.html", form=form)
     
 
 
-@customers.route("/login", methods = ["POST"])
+@customers.route("/login", methods = ["POST", "GET"])
 def cust_login():
+    form = LoginForm(request.form)
     if request.method=="POST":
-        user_name = request.json.get("user_name")
-        password = request.json.get("password")
+        username = form.username.data
+        pass_cand = form.password.data
 
-        user = local_session.query(Customer).filter(Customer.username==user_name).first()
+        user = local_session.query(Customer).filter(Customer.username==username).first()
 
         if user:
-            if check_password_hash(user.password, password):
-                pass
-    
+            if check_password_hash(user.password, pass_cand):
+                flash("log in successiful", "success")
+                return redirect(url_for("about"))
+            else:
+                flash("incorrect creds", "danger")
+                return render_template("login.html", form=form)
+        else:
+            flash("No such user", "warning")
+            return render_template("login.html", form=form)
+    return render_template("login.html", form=form)

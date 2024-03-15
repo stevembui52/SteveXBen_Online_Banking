@@ -1,0 +1,18 @@
+.display-flex{
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+.line-one{
+    background: #af234c;
+}
+
+.line-two img{
+    width: 100%;
+}
+.line-one .btn{
+    margin-bottom: 10px;
+}
+.center{
+    margin-left: 40%;
+}
