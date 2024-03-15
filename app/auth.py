@@ -1,7 +1,8 @@
-from flask import Blueprint, request, render_template, flash, redirect, url_for
+from flask import Blueprint, request, render_template, flash, redirect, url_for, session
 from db_model import *
 from form import RegisterForm, LoginForm
 from werkzeug.security import generate_password_hash, check_password_hash
+from is_logged import is_logged_in
 # from flask_jwt_extended import create_refresh_token, create_access_token, jwt_required, get_jwt_identity
 
 local_session = Session(bind=engine)
@@ -55,6 +56,8 @@ def cust_login():
 
         if user:
             if check_password_hash(user.password, pass_cand):
+                session['logged_in'] = True
+                session['username'] = username
                 flash("log in successiful", "success")
                 return redirect(url_for("about"))
             else:
@@ -64,3 +67,10 @@ def cust_login():
             flash("No such user", "warning")
             return render_template("login.html", form=form)
     return render_template("login.html", form=form)
+
+@customers.route("/logout")
+@is_logged_in
+def logout():
+    session.clear()
+    flash('successifully logged out', 'success')
+    return redirect(url_for('customers.cust_login'))

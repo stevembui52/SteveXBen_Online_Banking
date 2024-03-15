@@ -2,16 +2,17 @@
     display: flex;
     align-items: center;
     flex-direction: row-reverse;
+    height: 400px;
+    /* background: #123acd; */
 }
 .line-one{
-    background: #af234c;
+    padding: 20px;
+    max-width: 60%;
 }
 
 .line-two img{
     width: 100%;
-}
-.line-one .btn{
-    margin-bottom: 10px;
+    height: 380px;
 }
 .center{
     margin-left: 40%;
