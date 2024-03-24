@@ -20,7 +20,7 @@ def create_customer():
         id_number = form.id_number.data
         email = form.email.data
         # branch_id = data["branch_id"]
-        # account_id = data["account_id"]
+        # account_number = form.account
         phone_no = form.phone_no.data
         password = form.password.data
         address = form.address.data
@@ -29,7 +29,7 @@ def create_customer():
 
         if user:
             flash('Already registered please login ', 'danger')
-            return render_template("register.html", form=form)
+            return render_template("login.html", form=form)
 
         hashed_pwd = generate_password_hash(password)
 
@@ -38,9 +38,13 @@ def create_customer():
                         password=hashed_pwd, address=address)
         
         local_session.add(cust)
+        
+        # account = Account(account_number = 145477, account_type="savings", user=cust)
+        # local_session.add(account)
         local_session.commit()
-        flash('You are now registered you can login', 'success')
-        return redirect(url_for("index"))
+        flash('You are now registered you can login and  account created', 'success')
+
+        return redirect(url_for("customers.cust_login"))
     return render_template("register.html", form=form)
     
 
@@ -59,7 +63,7 @@ def cust_login():
                 session['logged_in'] = True
                 session['username'] = username
                 flash("log in successiful", "success")
-                return redirect(url_for("about"))
+                return redirect(url_for("dashboard.dashboard_func"))
             else:
                 flash("incorrect creds", "danger")
                 return render_template("login.html", form=form)

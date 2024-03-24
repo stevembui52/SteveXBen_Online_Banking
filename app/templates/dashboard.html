@@ -7,24 +7,40 @@
     </div>
     <div class="container accounts">
         <div class="accounts1">
-            <h3> Savings account</h3>
-            <p>Kes. 5000</p>
-            <p>Hello</p>
+            {% for acc in account %}
+                {% if acc.id == 1 %}
+                    <h3> {{acc.account_type}}</h3>
+                    <p>ACC NO. {{acc.account_number}}</p>
+                    <p>ACC BAL: {{acc.balance}}</p>
+                {% endif %}
+            {% endfor %}
         </div>
         <div class="accounts2">
-            <h3>Share Capital</h3>
-            <p>Kes. 5000</p>
-            <p>Hello</p>
+            {% for acc in account %}
+                {% if acc.id == 2 %}
+                    <h3> {{acc.account_type}}</h3>
+                    <p>ACC NO. {{acc.account_number}}</p>
+                    <p>ACC BAL: {{acc.balance}}</p>
+                {% endif %}
+            {% endfor %}
         </div>
         <div class="accounts3">
-            <h3>Current account</h3>
-            <p>Kes. 5000</p>
-            <p>Hello</p>
+            {% for acc in account %}
+                {% if acc.id == 3 %}
+                    <h3> {{acc.account_type}}</h3>
+                    <p>ACC NO. {{acc.account_number}}</p>
+                    <p>ACC BAL: {{acc.balance}}</p>
+                {% endif %}
+            {% endfor %}
         </div>
         <div class="accounts4">
-            <h3>Fixed account</h3>
-            <p>Kes. 5000</p>
-            <p>Hello</p>
+            {% for acc in account %}
+                {% if acc.id == 4 %}
+                    <h3> {{acc.account_type}}</h3>
+                    <p>ACC NO. {{acc.account_number}}</p>
+                    <p>ACC BAL: {{acc.balance}}</p>
+                {% endif %}
+            {% endfor %}
         </div>
-    </div>
+
 {% endblock %}

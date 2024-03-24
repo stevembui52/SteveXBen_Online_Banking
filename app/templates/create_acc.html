@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h1>Create an Account Here</h1>
+    {% from 'includes/_formhelper.html' import render_field %}
+    <form action="" method="post" novalidate>
+        <div class="form-group">
+            {{render_field(form.account_number, class_='form-control')}}
+        </div>
+        <div class="form-group">
+            {{render_field(form.account_type, class_='form-control')}}
+        </div>
+        <div class="form-group">
+            {{render_field(form.balance, class_='form-control')}}
+        </div>
+        <p><input type="submit" value="CREATE" class="btn btn-primary mt-4"></p>
+    </form>
+{% endblock %}

@@ -32,8 +32,7 @@ class Customer(Base):
     branch_id = Column(Integer(), ForeignKey("branches.id"), nullable=True)
     created_at = Column(DateTime(), default=datetime.now())
     updated_at = Column(DateTime(), onupdate=datetime.now())
-    account_id = Column(Integer(), ForeignKey('account.id'), nullable=True)
-    transaction = relationship("Transaction", backref="customers")
+    account = relationship('Account', backref='user')
 
 
     def __repr__(self):
@@ -45,8 +44,7 @@ class Account(Base):
     account_number = Column(String(10), unique=True, nullable=True)
     account_type = Column(String(50), unique=True)
     balance = Column(Float(), default=0)
-    # customer_id = Column(Integer(), ForeignKey('customers.id'), nullable=False)
-    customer = relationship("Customer", backref="account")
+    customer_id = Column(Integer(), ForeignKey('customers.id'), nullable=False)
     transaction = relationship("Transaction", backref="account")
 
 
@@ -60,7 +58,6 @@ class Transaction(Base):
     description = Column(String(200))
     timestamp = Column(DateTime(), default=datetime.now())
     account_id = Column(Integer(), ForeignKey('account.id'), nullable=True)
-    customer_id = Column(Integer(), ForeignKey('customers.id'), nullable=True)
 
 
     def __repr__(self):

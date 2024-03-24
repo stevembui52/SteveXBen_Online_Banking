@@ -1,9 +1,9 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-   <h1>Register Here</h1>
-   {% from 'includes/_formhelper.html' import render_field %}
-   <form action="" method="post" novalidate>
+    <h1>Register Here</h1>
+    {% from 'includes/_formhelper.html' import render_field %}
+    <form action="" method="post" novalidate>
         <div class="form-group">
             {{render_field(form.first_name, class_='form-control')}}
         </div>

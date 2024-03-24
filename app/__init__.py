@@ -6,6 +6,7 @@ from dashboard import dashboard
 from flask_jwt_extended import JWTManager
 from auth import customers
 from is_logged import is_logged_in
+from create_account import createacc
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
@@ -28,6 +29,7 @@ def create_app():
     app.register_blueprint(account)
     app.register_blueprint(customers)
     app.register_blueprint(dashboard)
+    app.register_blueprint(createacc)
     return app
 
 
